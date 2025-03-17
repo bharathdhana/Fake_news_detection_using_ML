@@ -8,6 +8,7 @@ Fake News Detection is the process of identifying and distinguishing false or mi
 3. CLoud deployment - Azure/AWS/GCP
 4. Frontend - HTML/CSS
 5. WebDriver for Chrome or Firefox
+6. Get the dataset from Kaggle
    
 
 #Usage 
