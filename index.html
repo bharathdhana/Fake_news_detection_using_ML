@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake News Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Fake News Detection</h1>
+        <form id="newsForm">
+            <label for="newsText">Enter News Text:</label>
+            <textarea id="newsText" name="newsText" rows="6" placeholder="Paste the news article here..." required></textarea>
+            <button type="submit">Check</button>
+        </form>
+        <div id="result" class="result">
+            <h2>Result:</h2>
+            <p id="predictionText">Prediction will appear here...</p>
+            <p id="probabilityText">Probability will appear here...</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('newsForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get the input text
+            const newsText = document.getElementById('newsText').value;
+
+            // Call the Flask backend API
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: newsText }),
+            });
+
+            const result = await response.json();
+
+            // Display the result
+            const prediction = result.prediction === 1 ? "Fake News" : "Not Fake News";
+            const probability = (result.probability * 100).toFixed(2);
+
+            document.getElementById('predictionText').textContent = `Prediction: ${prediction}`;
+            document.getElementById('probabilityText').textContent = `Probability: ${probability}%`;
+        });
+    </script>
+</body>
+</html>
